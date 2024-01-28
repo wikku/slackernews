@@ -1,12 +1,15 @@
 import Config
 
+# Only in tests, remove the complexity from the password hashing algorithm
+config :bcrypt_elixir, :log_rounds, 1
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :slackernews, Slackernews.Repo,
-  username: "postgres",
+  username: "vq",
   password: "postgres",
   hostname: "localhost",
   database: "slackernews_test#{System.get_env("MIX_TEST_PARTITION")}",
