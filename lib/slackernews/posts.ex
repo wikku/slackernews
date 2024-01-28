@@ -35,7 +35,10 @@ defmodule Slackernews.Posts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_post!(id), do: Repo.get!(Post, id)
+  def get_post!(id) do
+    Repo.get!(Post, id)
+    |> Repo.preload(:author)
+  end
 
   @doc """
   Creates a post.
