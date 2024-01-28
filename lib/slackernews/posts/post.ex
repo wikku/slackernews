@@ -6,7 +6,7 @@ defmodule Slackernews.Posts.Post do
     field :title, :string
     field :body, :string
     field :url, :string
-    field :author, :id
+    belongs_to :author, Slackernews.Accounts.User
 
     timestamps(type: :utc_datetime)
   end
