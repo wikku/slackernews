@@ -1,7 +1,7 @@
 <.header>
   Listing Posts
   <:actions>
-    <.link patch={~p"/posts/new"}>
+    <.link :if={@current_user} patch={~p"/posts/new"}>
       <.button>New Post</.button>
     </.link>
   </:actions>
@@ -21,7 +21,7 @@
     </div>
   </:action>
   <:action :let={{id, post}}>
-    <.link
+    <.link :if={Posts.can_edit(@current_user, post)}
       phx-click={JS.push("delete", value: %{id: post.id}) |> hide("##{id}")}
       data-confirm="Are you sure?"
     >
@@ -33,6 +33,7 @@
 <.modal :if={@live_action in [:new]} id="post-modal" show on_cancel={JS.patch(~p"/posts")}>
   <.live_component
     module={SlackernewsWeb.PostLive.FormComponent}
+    current_user={@current_user}
     id={@post.id || :new}
     title={@page_title}
     action={@live_action}

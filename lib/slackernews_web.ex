@@ -54,6 +54,8 @@ defmodule SlackernewsWeb do
       use Phoenix.LiveView,
         layout: {SlackernewsWeb.Layouts, :app}
 
+      on_mount {SlackernewsWeb.UserAuth, :mount_current_user}
+
       unquote(html_helpers())
     end
   end

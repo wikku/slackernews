@@ -42,18 +42,9 @@ defmodule Slackernews.Posts do
 
   @doc """
   Creates a post.
-
-  ## Examples
-
-      iex> create_post(%{field: value})
-      {:ok, %Post{}}
-
-      iex> create_post(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
   """
-  def create_post(attrs \\ %{}) do
-    %Post{}
+  def create_post(author_id, attrs \\ %{}) do
+    %Post{author_id: author_id}
     |> Post.changeset(attrs)
     |> Repo.insert()
   end
@@ -103,5 +94,14 @@ defmodule Slackernews.Posts do
   """
   def change_post(%Post{} = post, attrs \\ %{}) do
     Post.changeset(post, attrs)
+  end
+
+  @doc """
+    Returns a boolean indicating authorization to edit post.
+  """
+  def can_edit(user, %Post{} = post) do
+    user_id = user && Map.get(user, :id)
+    user_id != nil &&
+    user_id == post.author_id
   end
 end
