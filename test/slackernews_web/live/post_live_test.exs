@@ -46,29 +46,6 @@ defmodule SlackernewsWeb.PostLiveTest do
       assert html =~ "some title"
     end
 
-    test "updates post in listing", %{conn: conn, post: post} do
-      {:ok, index_live, _html} = live(conn, ~p"/posts")
-
-      assert index_live |> element("#posts-#{post.id} a", "Edit") |> render_click() =~
-               "Edit Post"
-
-      assert_patch(index_live, ~p"/posts/#{post}/edit")
-
-      assert index_live
-             |> form("#post-form", post: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
-
-      assert index_live
-             |> form("#post-form", post: @update_attrs)
-             |> render_submit()
-
-      assert_patch(index_live, ~p"/posts")
-
-      html = render(index_live)
-      assert html =~ "Post updated successfully"
-      assert html =~ "some updated title"
-    end
-
     test "deletes post in listing", %{conn: conn, post: post} do
       {:ok, index_live, _html} = live(conn, ~p"/posts")
 

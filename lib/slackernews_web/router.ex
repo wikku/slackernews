@@ -21,7 +21,6 @@ defmodule SlackernewsWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live "/posts/new", PostLive.Index, :new
-    live "/posts/:id/edit", PostLive.Index, :edit
     live "/posts/:id/show/edit", PostLive.Show, :edit
   end
 
