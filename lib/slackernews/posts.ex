@@ -36,8 +36,14 @@ defmodule Slackernews.Posts do
 
   """
   def get_post!(id) do
-    Repo.get!(Post, id)
-    |> Repo.preload(:author)
+#   Repo.get!(Post, id)
+#   |> Repo.preload(:author)
+    Repo.one! from p in Post,
+                where: p.id == type(^id, :integer),
+                left_join: v in assoc(p, :votes),
+                group_by: p.id,
+                preload: :author,
+                select: %Post{p | score: coalesce(0, sum(v.type))}
   end
 
   @doc """

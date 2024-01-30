@@ -7,6 +7,8 @@ defmodule Slackernews.Posts.Post do
     field :body, :string
     field :url, :string
     belongs_to :author, Slackernews.Accounts.User
+    has_many :votes, Slackernews.Posts.PostVote
+    field :score, :integer, virtual: true
 
     timestamps(type: :utc_datetime)
   end
