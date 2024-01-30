@@ -14,6 +14,13 @@
   <:item title="Body"><%= @post.body %></:item>
   <:item title="Url"><%= @post.url %></:item>
   <:item title="Score"><%= @post.score %></:item>
+  <:item title="Votes">
+    <.live_component
+      module={SlackernewsWeb.PostLive.VoteComponent}
+      user_id={@current_user && @current_user.id}
+      id={@post.id}
+    />
+  </:item>
 </.list>
 
 <.back navigate={~p"/posts"}>Back to posts</.back>

@@ -7,6 +7,7 @@ defmodule Slackernews.Posts do
   alias Slackernews.Repo
 
   alias Slackernews.Posts.Post
+  alias Slackernews.Posts.PostVote
 
   @doc """
   Returns the list of posts.
@@ -109,5 +110,16 @@ defmodule Slackernews.Posts do
     user_id = user && Map.get(user, :id)
     user_id != nil &&
     user_id == post.author_id
+  end
+
+  @doc """
+    Returns the vote direction of a user on a post.
+  """
+  def users_vote(nil, _post_id), do: 0
+  def users_vote(user_id, post_id) do
+    case Repo.get_by(PostVote, [author_id: user_id, post_id: post_id]) do
+      %PostVote{type: type} -> type
+      nil -> 0
+    end
   end
 end
