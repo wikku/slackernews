@@ -571,6 +571,26 @@ defmodule SlackernewsWeb.CoreComponents do
   end
 
   @doc """
+  Renders a timestamp.
+
+  ## Examples
+
+      <.timestamp obj={post}/>
+  """
+  attr :obj, :map, required: true
+
+  def timestamp(assigns) do
+    ~H"""
+    <span>
+      <%= @obj.inserted_at %>.
+    </span>
+    <em :if={@obj.inserted_at != @obj.updated_at}>
+      Edited at <%= @obj.updated_at %>
+    </em>
+    """
+  end
+
+  @doc """
   Renders a [Heroicon](https://heroicons.com).
 
   Heroicons come in three styles – outline, solid, and mini.

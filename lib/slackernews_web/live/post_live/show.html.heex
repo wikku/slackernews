@@ -13,6 +13,7 @@
   <:item title="Title"><%= @post.title %></:item>
   <:item title="Body"><%= @post.body %></:item>
   <:item title="Url"><%= @post.url %></:item>
+  <:item title="Timestamp"><.timestamp obj={@post}/></:item>
   <:item title="Votes">
     <.live_component
       module={SlackernewsWeb.PostLive.VoteComponent}
