@@ -44,7 +44,7 @@ defmodule Slackernews.Posts do
                 left_join: v in assoc(p, :votes),
                 group_by: p.id,
                 preload: :author,
-                select: %Post{p | score: coalesce(0, sum(v.type))}
+                select: %Post{p | score: coalesce(sum(v.type), 0)}
   end
 
   @doc """
@@ -121,5 +121,14 @@ defmodule Slackernews.Posts do
       %PostVote{type: type} -> type
       nil -> 0
     end
+  end
+
+  def cast_vote(voter_id, post_id, 0) do
+    Repo.delete_all(PostVote |> where(author_id: ^voter_id, post_id: ^post_id))
+  end
+  def cast_vote(voter_id, post_id, vote) do
+    Repo.insert!(%PostVote{author_id: voter_id, post_id: post_id, type: vote},
+                 on_conflict: {:replace, [:type]},
+                 conflict_target: [:post_id, :author_id])
   end
 end
