@@ -6,6 +6,7 @@ defmodule SlackernewsWeb.PostLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket), do: Posts.subscribe()
     {:ok, stream(socket, :posts, Posts.list_posts())}
   end
 
@@ -26,8 +27,13 @@ defmodule SlackernewsWeb.PostLive.Index do
     |> assign(:post, nil)
   end
 
+#  @impl true
+#  def handle_info({SlackernewsWeb.PostLive.FormComponent, {:saved, post}}, socket) do
+#    {:noreply, stream_insert(socket, :posts, post)}
+#  end
+
   @impl true
-  def handle_info({SlackernewsWeb.PostLive.FormComponent, {:saved, post}}, socket) do
+  def handle_info({:post_created, post}, socket) do
     {:noreply, stream_insert(socket, :posts, post)}
   end
 

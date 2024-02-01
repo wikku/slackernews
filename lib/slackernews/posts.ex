@@ -54,6 +54,7 @@ defmodule Slackernews.Posts do
     %Post{author_id: author_id}
     |> Post.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:post_created)
   end
 
   @doc """
@@ -72,6 +73,7 @@ defmodule Slackernews.Posts do
     post
     |> Post.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:post_updates)
   end
 
   @doc """
@@ -131,4 +133,16 @@ defmodule Slackernews.Posts do
                  on_conflict: {:replace, [:type]},
                  conflict_target: [:post_id, :author_id])
   end
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(Slackernews.PubSub, "posts")
+  end
+
+  defp broadcast({:error, _reason} = error, _event), do: error
+
+  defp broadcast({:ok, post}, event) do
+    Phoenix.PubSub.broadcast(Slackernews.PubSub, "posts", {event, post})
+    {:ok, post}
+  end
+
 end
