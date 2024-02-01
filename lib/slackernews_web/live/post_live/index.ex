@@ -7,7 +7,7 @@ defmodule SlackernewsWeb.PostLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket), do: Posts.subscribe()
-    {:ok, stream(socket, :posts, Posts.list_posts())}
+    {:ok, stream(socket, :posts, Enum.reverse(Posts.list_posts()), at: 0)}
   end
 
   @impl true
@@ -34,7 +34,7 @@ defmodule SlackernewsWeb.PostLive.Index do
 
   @impl true
   def handle_info({:post_created, post}, socket) do
-    {:noreply, stream_insert(socket, :posts, post)}
+    {:noreply, stream_insert(socket, :posts, post, at: 0)}
   end
 
   @impl true
