@@ -38,6 +38,16 @@ defmodule SlackernewsWeb.PostLive.Index do
   end
 
   @impl true
+  def handle_info({:post_updated, post}, socket) do
+    {:noreply, stream_insert(socket, :posts, post)}
+  end
+
+  @impl true
+  def handle_info({:post_deleted, post}, socket) do
+    {:noreply, stream_delete(socket, :posts, post)}
+  end
+
+  @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     post = Posts.get_post!(id)
     {:ok, _} = Posts.delete_post(post)

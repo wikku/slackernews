@@ -73,7 +73,7 @@ defmodule Slackernews.Posts do
     post
     |> Post.changeset(attrs)
     |> Repo.update()
-    |> broadcast(:post_updates)
+    |> broadcast(:post_updated)
   end
 
   @doc """
@@ -90,6 +90,7 @@ defmodule Slackernews.Posts do
   """
   def delete_post(%Post{} = post) do
     Repo.delete(post)
+    |> broadcast(:post_deleted)
   end
 
   @doc """
