@@ -32,6 +32,9 @@ defmodule SlackernewsWeb.PostLive.VoteComponent do
   def handle_event("down", _, socket), do: handle_vote(-1, socket)
 
   defp handle_vote(clicked_vote, socket) do
+    if !socket.assigns.user_id do
+      raise Slackernews.UnauthorizedError, "log in to vote"
+    end
     vote = socket.assigns.vote
     new_vote = if vote == clicked_vote do 0 else clicked_vote end
     new_score = socket.assigns.score - vote + new_vote

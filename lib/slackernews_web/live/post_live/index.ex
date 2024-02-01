@@ -7,7 +7,7 @@ defmodule SlackernewsWeb.PostLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket), do: Posts.subscribe()
-    {:ok, stream(socket, :posts, Enum.reverse(Posts.list_posts()), at: 0)}
+    {:ok, stream(socket, :posts, Enum.reverse(Posts.list_posts()))}
   end
 
   @impl true
@@ -50,6 +50,9 @@ defmodule SlackernewsWeb.PostLive.Index do
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     post = Posts.get_post!(id)
+    if !Posts.can_edit(socket.assigns.current_user, post) do
+      raise Slackernews.UnauthorizedError, "cannot edit this post"
+    end
     {:ok, _} = Posts.delete_post(post)
 
     {:noreply, stream_delete(socket, :posts, post)}

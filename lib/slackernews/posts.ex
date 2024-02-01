@@ -8,6 +8,7 @@ defmodule Slackernews.Posts do
 
   alias Slackernews.Posts.Post
   alias Slackernews.Posts.PostVote
+  alias Slackernews.Accounts.User
 
   @doc """
   Returns the list of posts.
@@ -109,10 +110,9 @@ defmodule Slackernews.Posts do
   @doc """
     Returns a boolean indicating authorization to edit post.
   """
-  def can_edit(user, %Post{} = post) do
-    user_id = user && Map.get(user, :id)
-    user_id != nil &&
-    user_id == post.author_id
+  def can_edit(nil, _post), do: false
+  def can_edit(%User{id: id}, %Post{} = post) do
+    id && id == post.author_id
   end
 
   @doc """

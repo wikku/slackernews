@@ -55,6 +55,9 @@ defmodule SlackernewsWeb.PostLive.FormComponent do
   end
 
   defp save_post(socket, :edit, post_params) do
+    if !Posts.can_edit(socket.assigns.current_user, socket.assigns.post) do
+      raise Slackernews.UnauthorizedError, "cannot edit this post"
+    end
     case Posts.update_post(socket.assigns.post, post_params) do
       {:ok, _post} ->
         {:noreply,
@@ -68,6 +71,9 @@ defmodule SlackernewsWeb.PostLive.FormComponent do
   end
 
   defp save_post(socket, :new, post_params) do
+    if !socket.assigns.current_user do
+      raise Slackernews.UnauthorizedError, "log in to make post"
+    end
     case Posts.create_post(socket.assigns.current_user.id, post_params) do
       {:ok, _post} ->
         {:noreply,
