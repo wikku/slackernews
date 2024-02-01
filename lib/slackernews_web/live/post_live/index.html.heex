@@ -20,8 +20,8 @@
     />
   </:col>
   <:col :let={{_id, post}} label="Title"><%= post.title %></:col>
-  <:col :let={{_id, post}} label="Body"><%= post.body %></:col>
   <:col :let={{_id, post}} label="Url"><%= post.url %></:col>
+  <:col :let={{_id, post}} label="Timestamp"><.timestamp obj={post}/></:col>
   <:action :let={{_id, post}}>
     <div class="sr-only">
       <.link navigate={~p"/posts/#{post}"}>Show</.link>
