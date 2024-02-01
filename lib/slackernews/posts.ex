@@ -119,19 +119,19 @@ defmodule Slackernews.Posts do
   """
   def users_vote(nil, _post_id), do: 0
   def users_vote(user_id, post_id) do
-    case Repo.get_by(PostVote, [author_id: user_id, post_id: post_id]) do
+    case Repo.get_by(PostVote, [voter_id: user_id, post_id: post_id]) do
       %PostVote{type: type} -> type
       nil -> 0
     end
   end
 
   def cast_vote(voter_id, post_id, 0) do
-    Repo.delete_all(PostVote |> where(author_id: ^voter_id, post_id: ^post_id))
+    Repo.delete_all(PostVote |> where(voter_id: ^voter_id, post_id: ^post_id))
   end
   def cast_vote(voter_id, post_id, vote) do
-    Repo.insert!(%PostVote{author_id: voter_id, post_id: post_id, type: vote},
+    Repo.insert!(%PostVote{voter_id: voter_id, post_id: post_id, type: vote},
                  on_conflict: {:replace, [:type]},
-                 conflict_target: [:post_id, :author_id])
+                 conflict_target: [:post_id, :voter_id])
   end
 
   def subscribe do

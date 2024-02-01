@@ -3,7 +3,7 @@ defmodule Slackernews.Posts.PostVote do
 
   schema "post_votes" do
     belongs_to :post, Slackernews.Posts.Post
-    belongs_to :author, Slackernews.Accounts.User
+    belongs_to :voter, Slackernews.Accounts.User
     field :type, :integer
 
     timestamps(type: :utc_datetime)
