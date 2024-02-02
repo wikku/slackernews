@@ -12,14 +12,17 @@ defmodule SlackernewsWeb.CommentLive.Show do
       <div> <%= @comment.body %> </div>
       <ul class="ml-8">
         <li>
-          <.live_component
-            module={SlackernewsWeb.CommentLive.FormComponent}
-            current_user={@current_user}
-            id={"reply-to-#{@comment.id}"}
-            action={:new}
-            post_id={@post.id}
-            comment={%Slackernews.Comments.Comment{author: @current_user, parent_post_id: @post.id, parent_comment_id: @comment.id}}
-          />
+          <details>
+            <summary>Reply:</summary>
+            <.live_component
+              module={SlackernewsWeb.CommentLive.FormComponent}
+              current_user={@current_user}
+              id={"reply-to-#{@comment.id}"}
+              action={:new}
+              post_id={@post.id}
+              comment={%Slackernews.Comments.Comment{author: @current_user, parent_post_id: @post.id, parent_comment_id: @comment.id}}
+            />
+          </details>
 
         </li>
         <%= if is_list(@comment.child_comments) do %>
