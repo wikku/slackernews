@@ -20,7 +20,7 @@ defmodule SlackernewsWeb.CommentLive.Show do
               id={"reply-to-#{@comment.id}"}
               action={:new}
               post_id={@post.id}
-              comment={%Slackernews.Comments.Comment{author: @current_user, parent_post_id: @post.id, parent_comment_id: @comment.id}}
+              comment={%Slackernews.Comments.Comment{author_id: @current_user.id, parent_post_id: @post.id, parent_comment_id: @comment.id}}
             />
           </details>
         </li>

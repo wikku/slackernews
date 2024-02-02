@@ -38,13 +38,13 @@
   />
 </.modal>
 
-<.live_component
+<.live_component :if={@current_user}
   module={SlackernewsWeb.CommentLive.FormComponent}
   current_user={@current_user}
   id="top"
   action={:new}
   post_id={@post.id}
-  comment={%Comments.Comment{author: @current_user, parent_post_id: @post.id}}
+  comment={%Comments.Comment{author_id: @current_user.id, parent_post_id: @post.id}}
 />
 
 <%= for comment <- @comments do %>
