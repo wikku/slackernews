@@ -11,7 +11,7 @@ defmodule SlackernewsWeb.CommentLive.Show do
       <div><.timestamp obj={@comment}/></div>
       <div> <%= @comment.body %> </div>
       <ul class="ml-8">
-        <li>
+        <li :if={@current_user}>
           <details>
             <summary>Reply:</summary>
             <.live_component
@@ -23,7 +23,6 @@ defmodule SlackernewsWeb.CommentLive.Show do
               comment={%Slackernews.Comments.Comment{author: @current_user, parent_post_id: @post.id, parent_comment_id: @comment.id}}
             />
           </details>
-
         </li>
         <%= if is_list(@comment.child_comments) do %>
           <%= for child <- @comment.child_comments || [] do %>
