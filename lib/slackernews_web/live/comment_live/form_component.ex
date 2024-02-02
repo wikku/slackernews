@@ -24,8 +24,7 @@ defmodule SlackernewsWeb.CommentLive.FormComponent do
   end
 
   @impl true
-  def update(assigns, socket) do
-    comment = %Comments.Comment{id: assigns.post_id, author: assigns.current_user}
+  def update(%{comment: comment} = assigns, socket) do
     changeset = Comments.change_comment(comment)
 
     {:ok,
