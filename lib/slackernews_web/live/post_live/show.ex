@@ -16,7 +16,7 @@ defmodule SlackernewsWeb.PostLive.Show do
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
      |> assign(:post, Posts.get_post!(id))
-     |> assign(:comments, Comments.list_post_comments(id))}
+     |> assign(:comments, Comments.list_post_comments(id) |> Enum.map(&Comments.load_child_comments(&1, 3)))}
   end
 
   defp page_title(:show), do: "Show Post"

@@ -26,9 +26,9 @@ defmodule SlackernewsWeb.CommentLive.Show do
 
         </li>
         <%= if is_list(@comment.child_comments) do %>
-          <%= for child <- {@comment.child_comments || []} do %>
+          <%= for child <- @comment.child_comments || [] do %>
             <li>
-              <.comment comment={child}/>
+              <.comment comment={child} current_user={@current_user} post={@post}/>
             </li>
           <% end %>
         <% end %>

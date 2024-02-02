@@ -30,6 +30,15 @@ defmodule Slackernews.Comments do
   end
 
   @doc """
+  """
+  def load_child_comments(%Comment{} = c, 0), do: c
+  def load_child_comments(%Comment{} = c, depth) when depth > 0 do
+    c
+    |> Repo.preload(:child_comments)
+    |> Map.update!(:child_comments, &Enum.map(&1, fn c -> load_child_comments(c, depth-1) end))
+  end
+
+  @doc """
   Gets a single comment.
 
   Raises `Ecto.NoResultsError` if the Comment does not exist.
