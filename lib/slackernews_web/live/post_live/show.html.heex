@@ -48,5 +48,5 @@
 />
 
 <%= for comment <- @comments do %>
-  <.comment comment={comment}/>
+  <.comment comment={comment} current_user={@current_user} post={@post}/>
 <% end %>

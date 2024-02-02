@@ -6,18 +6,30 @@ defmodule SlackernewsWeb.CommentLive.Show do
   @impl true
   def comment(assigns) do
     ~H"""
-    <div>
+    <div class="m-10">
+      <hr/>
       <div><.timestamp obj={@comment}/></div>
       <div> <%= @comment.body %> </div>
-      <%= if is_list(@comment.child_comments) do %>
-      <ul>
-      <%= for child <- {@comment.child_comments || []} do %>
+      <ul class="ml-8">
         <li>
-        <.comment comment={child}/>
+          <.live_component
+            module={SlackernewsWeb.CommentLive.FormComponent}
+            current_user={@current_user}
+            id={@comment.id}
+            action={:new}
+            post_id={@post.id}
+            comment={%Slackernews.Comments.Comment{}}
+          />
+
         </li>
-      <% end %>
+        <%= if is_list(@comment.child_comments) do %>
+          <%= for child <- {@comment.child_comments || []} do %>
+            <li>
+              <.comment comment={child}/>
+            </li>
+          <% end %>
+        <% end %>
       </ul>
-      <% end %>
     </div>
     """
   end
