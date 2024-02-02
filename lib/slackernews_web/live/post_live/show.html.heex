@@ -48,7 +48,5 @@
 />
 
 <%= for comment <- @comments do %>
-  <div>
-  <%= comment.body %>
-  </div>
+  <.comment comment={comment}/>
 <% end %>

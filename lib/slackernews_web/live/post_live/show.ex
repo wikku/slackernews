@@ -3,6 +3,7 @@ defmodule SlackernewsWeb.PostLive.Show do
 
   alias Slackernews.Posts
   alias Slackernews.Comments
+  import SlackernewsWeb.CommentLive.Show
 
   @impl true
   def mount(_params, _session, socket) do
