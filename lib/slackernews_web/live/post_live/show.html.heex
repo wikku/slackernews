@@ -46,3 +46,9 @@
   post_id={@post.id}
   comment={%Slackernews.Comments.Comment{}}
 />
+
+<%= for comment <- @comments do %>
+  <div>
+  <%= comment.body %>
+  </div>
+<% end %>

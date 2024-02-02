@@ -2,6 +2,7 @@ defmodule SlackernewsWeb.PostLive.Show do
   use SlackernewsWeb, :live_view
 
   alias Slackernews.Posts
+  alias Slackernews.Comments
 
   @impl true
   def mount(_params, _session, socket) do
@@ -13,7 +14,8 @@ defmodule SlackernewsWeb.PostLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:post, Posts.get_post!(id))}
+     |> assign(:post, Posts.get_post!(id))
+     |> assign(:comments, Comments.list_post_comments(id))}
   end
 
   defp page_title(:show), do: "Show Post"
