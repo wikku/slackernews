@@ -57,8 +57,8 @@ defmodule Slackernews.Comments do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_comment(author_id, parent_post_id, attrs \\ %{}) do
-    %Comment{author_id: author_id, parent_post_id: parent_post_id}
+  def create_comment(author_id, post_id, parent_id, attrs \\ %{}) do
+    %Comment{author_id: author_id, parent_post_id: post_id, parent_comment_id: parent_id}
     |> Comment.changeset(attrs)
     |> Repo.insert()
   end

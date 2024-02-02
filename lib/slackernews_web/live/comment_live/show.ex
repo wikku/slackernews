@@ -15,10 +15,10 @@ defmodule SlackernewsWeb.CommentLive.Show do
           <.live_component
             module={SlackernewsWeb.CommentLive.FormComponent}
             current_user={@current_user}
-            id={@comment.id}
+            id={"reply-to-#{@comment.id}"}
             action={:new}
             post_id={@post.id}
-            comment={%Slackernews.Comments.Comment{}}
+            comment={%Slackernews.Comments.Comment{author: @current_user, parent_post_id: @post.id, parent_comment_id: @comment.id}}
           />
 
         </li>

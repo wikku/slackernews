@@ -9,7 +9,7 @@ defmodule SlackernewsWeb.CommentLive.FormComponent do
     <div>
       <.simple_form
         for={@form}
-        id="comment-form"
+        id={@id}
         phx-target={@myself}
         phx-change="validate"
         phx-submit="save"
@@ -24,7 +24,8 @@ defmodule SlackernewsWeb.CommentLive.FormComponent do
   end
 
   @impl true
-  def update(%{comment: comment} = assigns, socket) do
+  def update(assigns, socket) do
+    comment = %Comments.Comment{id: assigns.post_id, author: assigns.current_user}
     changeset = Comments.change_comment(comment)
 
     {:ok,
@@ -67,19 +68,22 @@ defmodule SlackernewsWeb.CommentLive.FormComponent do
     if !socket.assigns.current_user do
       raise Slackernews.UnauthorizedError, "log in to make comment"
     end
-    case Comments.create_comment(socket.assigns.current_user.id, socket.assigns.post_id, comment_params) do
+    IO.inspect("asdf")
+    comment = socket.assigns.comment
+    case Comments.create_comment(comment.author_id, comment.parent_post_id, comment.parent_comment_id, comment_params) do
       {:ok, _comment} ->
         {:noreply,
          socket
          |> put_flash(:info, "Comment created successfully") }
 
       {:error, %Ecto.Changeset{} = changeset} ->
+        IO.inspect("asdf")
         {:noreply, assign_form(socket, changeset)}
     end
   end
 
   defp assign_form(socket, %Ecto.Changeset{} = changeset) do
-    assign(socket, :form, to_form(changeset))
+    assign(socket, :form, to_form(changeset, id: socket.assigns.id))
   end
 
 end
