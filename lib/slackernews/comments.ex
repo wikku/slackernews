@@ -7,6 +7,7 @@ defmodule Slackernews.Comments do
   alias Slackernews.Repo
 
   alias Slackernews.Comments.Comment
+  alias Slackernews.Accounts.User
 
   @doc """
   Returns the list of comments.
@@ -49,8 +50,8 @@ defmodule Slackernews.Comments do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_comment(attrs \\ %{}) do
-    %Comment{}
+  def create_comment(author_id, parent_post_id, attrs \\ %{}) do
+    %Comment{author_id: author_id, parent_post_id: parent_post_id}
     |> Comment.changeset(attrs)
     |> Repo.insert()
   end
@@ -100,5 +101,13 @@ defmodule Slackernews.Comments do
   """
   def change_comment(%Comment{} = comment, attrs \\ %{}) do
     Comment.changeset(comment, attrs)
+  end
+
+  @doc """
+    Returns a boolean indicating authorization to edit post.
+  """
+  def can_edit(nil, _comment), do: false
+  def can_edit(%User{id: id}, %Comment{} = comment) do
+    id && id == comment.author_id
   end
 end
