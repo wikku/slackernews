@@ -5,9 +5,9 @@ defmodule Slackernews.Comments.Comment do
   schema "comments" do
     field :body, :string
     belongs_to :author, Slackernews.Accounts.User
-    belongs_to :parent_post, Slackernews.Posts.Post
-    belongs_to :parent_comment, Slackernews.Comments.Comment
-    has_many :child_comments, Slackernews.Comments.Comment, foreign_key: :parent_comment_id
+    belongs_to :post, Slackernews.Posts.Post
+    belongs_to :parent, Slackernews.Comments.Comment
+    has_many :child_comments, Slackernews.Comments.Comment, foreign_key: :parent_id
     field :score, :integer, virtual: true
 
     timestamps(type: :utc_datetime)

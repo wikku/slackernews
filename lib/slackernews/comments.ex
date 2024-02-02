@@ -26,7 +26,7 @@ defmodule Slackernews.Comments do
   Returns the list of comments under a post.
   """
   def list_post_comments(post_id) do
-    Repo.all(from c in Comment, where: c.parent_post_id == ^post_id and is_nil(c.parent_comment_id))
+    Repo.all(from c in Comment, where: c.post_id == ^post_id and is_nil(c.parent_id))
   end
 
   @doc """
@@ -67,7 +67,7 @@ defmodule Slackernews.Comments do
 
   """
   def create_comment(author_id, post_id, parent_id, attrs \\ %{}) do
-    %Comment{author_id: author_id, parent_post_id: post_id, parent_comment_id: parent_id}
+    %Comment{author_id: author_id, post_id: post_id, parent_id: parent_id}
     |> Comment.changeset(attrs)
     |> Repo.insert()
   end

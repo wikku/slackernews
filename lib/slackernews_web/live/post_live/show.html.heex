@@ -44,7 +44,7 @@
   id="top"
   action={:new}
   post_id={@post.id}
-  comment={%Comments.Comment{author_id: @current_user.id, parent_post_id: @post.id}}
+  comment={%Comments.Comment{author_id: @current_user.id, post_id: @post.id}}
 />
 
 <%= for comment <- @comments do %>
