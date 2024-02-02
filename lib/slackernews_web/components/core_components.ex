@@ -581,12 +581,16 @@ defmodule SlackernewsWeb.CoreComponents do
 
   def timestamp(assigns) do
     ~H"""
-    <span>
-      <%= @obj.inserted_at %>.
+    <time datetime={@obj.inserted_at} title={@obj.inserted_at}>
+     <%= Timex.Format.DateTime.Formatters.Relative.format!(@obj.inserted_at, "{relative}") %>
+    </time>
+    <span :if={@obj.inserted_at != @obj.updated_at}>
+      (<em>edited
+      <time datetime={@obj.updated_at} title={@obj.updated_at}>
+        <%= Timex.Format.DateTime.Formatters.Relative.format!(@obj.updated_at, "{relative}") %><!--
+      --></time><!--
+      --></em>)
     </span>
-    <em :if={@obj.inserted_at != @obj.updated_at}>
-      Edited at <%= @obj.updated_at %>
-    </em>
     """
   end
 
