@@ -23,6 +23,13 @@ defmodule Slackernews.Comments do
   end
 
   @doc """
+  Returns the list of comments under a post.
+  """
+  def list_post_comments(post_id) do
+    Repo.all(from c in Comment, where: c.post_id == ^post_id)
+  end
+
+  @doc """
   Gets a single comment.
 
   Raises `Ecto.NoResultsError` if the Comment does not exist.
