@@ -47,6 +47,12 @@
   comment={%Comments.Comment{author_id: @current_user.id, post_id: @post.id}}
 />
 
+<%= if @comments && hd(@comments).parent_id do %>
+  <p>
+    You are viewing a single comment's thread.
+  </p>
+<% end %>
+
 <%= for comment <- @comments do %>
   <.comment comment={comment} current_user={@current_user} post={@post}/>
 <% end %>
