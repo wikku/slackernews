@@ -11,6 +11,15 @@ defmodule SlackernewsWeb.PostLive.Show do
   end
 
   @impl true
+  def handle_params(%{"id" => id, "root" => root}, _, socket) do
+    {:noreply,
+     socket
+     |> assign(:page_title, page_title(socket.assigns.live_action))
+     |> assign(:post, Posts.get_post!(id))
+     |> assign(:comments, [Comments.get_comment!(root) |> Comments.load_child_comments(3)])}
+  end
+
+  @impl true
   def handle_params(%{"id" => id}, _, socket) do
     {:noreply,
      socket

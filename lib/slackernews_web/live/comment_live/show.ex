@@ -8,7 +8,10 @@ defmodule SlackernewsWeb.CommentLive.Show do
     ~H"""
     <div class="m-10">
       <hr/>
-      <div><.timestamp obj={@comment}/></div>
+      <div>
+        <.timestamp obj={@comment}/>
+        <.link :if={@comment.parent_id} href={"/posts/#{@post.id}/#{@comment.parent_id}"}>Parent</.link>
+      </div>
       <div> <%= @comment.body %> </div>
       <ul class="ml-8">
         <li :if={@current_user}>
