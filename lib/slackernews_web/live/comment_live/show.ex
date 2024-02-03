@@ -11,7 +11,7 @@ defmodule SlackernewsWeb.CommentLive.Show do
       <div>
         <span><%= @comment.author.email %></span>
         <.timestamp obj={@comment}/>
-        <.link :if={@comment.parent_id} href={"/posts/#{@post.id}/#{@comment.parent_id}"}>Parent</.link>
+        <.link :if={@comment.parent_id} navigate={"/posts/#{@post.id}/#{@comment.parent_id}"}>Parent</.link>
       </div>
       <div> <%= @comment.body %> </div>
       <ul class="ml-8">
@@ -36,7 +36,7 @@ defmodule SlackernewsWeb.CommentLive.Show do
           <% end %>
         <% end %>
         <%= if @comment.child_comments == :some do %>
-          <.link href={"/posts/#{@post.id}/#{@comment.id}"}>More replies</.link>
+          <.link navigate={"/posts/#{@post.id}/#{@comment.id}"}>More replies</.link>
         <% end %>
       </ul>
     </div>
