@@ -11,12 +11,14 @@ defmodule SlackernewsWeb.CommentLive.Show do
         <div class="text-zinc-700 text-sm">
           <span><%= @comment.author.email %></span>
           | <.timestamp obj={@comment}/>
-          <.link :if={@comment.parent_id} navigate={"/posts/#{@post.id}/#{@comment.parent_id}"}>| Parent</.link>
+          <.link :if={@comment.parent_id} navigate={"/posts/#{@post.id}/#{@comment.parent_id}"}>| parent</.link>
         </div>
-        <div> <%= @comment.body %> </div>
+        <div class="mb-0.5">
+          <%= @comment.body %>
+        </div>
         <div :if={@current_user} class="text-sm">
           <details>
-            <summary class="text-zinc-700">Reply:</summary>
+            <summary class="text-zinc-700 text-xs list-none cursor-pointer">reply</summary>
             <.live_component
               module={SlackernewsWeb.CommentLive.FormComponent}
               current_user={@current_user}
