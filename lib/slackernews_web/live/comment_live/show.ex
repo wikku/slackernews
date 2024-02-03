@@ -6,18 +6,17 @@ defmodule SlackernewsWeb.CommentLive.Show do
   @impl true
   def comment(assigns) do
     ~H"""
-    <div class="m-10">
-      <hr/>
-      <div>
-        <span><%= @comment.author.email %></span>
-        <.timestamp obj={@comment}/>
-        <.link :if={@comment.parent_id} navigate={"/posts/#{@post.id}/#{@comment.parent_id}"}>Parent</.link>
-      </div>
-      <div> <%= @comment.body %> </div>
-      <ul class="ml-8">
-        <li :if={@current_user}>
+    <div>
+      <div class="m-4">
+        <div class="text-zinc-700 text-sm">
+          <span><%= @comment.author.email %></span>
+          | <.timestamp obj={@comment}/>
+          <.link :if={@comment.parent_id} navigate={"/posts/#{@post.id}/#{@comment.parent_id}"}>| Parent</.link>
+        </div>
+        <div> <%= @comment.body %> </div>
+        <div :if={@current_user} class="text-sm">
           <details>
-            <summary>Reply:</summary>
+            <summary class="text-zinc-700">Reply:</summary>
             <.live_component
               module={SlackernewsWeb.CommentLive.FormComponent}
               current_user={@current_user}
@@ -27,7 +26,9 @@ defmodule SlackernewsWeb.CommentLive.Show do
               comment={%Slackernews.Comments.Comment{author_id: @current_user.id, post_id: @post.id, parent_id: @comment.id}}
             />
           </details>
-        </li>
+        </div>
+      </div>
+      <ul class="ml-8">
         <%= if is_list(@comment.child_comments) do %>
           <%= for child <- @comment.child_comments || [] do %>
             <li>

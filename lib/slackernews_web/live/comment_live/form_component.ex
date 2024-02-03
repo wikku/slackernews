@@ -14,7 +14,7 @@ defmodule SlackernewsWeb.CommentLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={@form[:body]} type="text" label="Body" />
+        <.input field={@form[:body]} type="textarea"/>
         <:actions>
           <.button phx-disable-with="Saving...">Save Comment</.button>
         </:actions>
