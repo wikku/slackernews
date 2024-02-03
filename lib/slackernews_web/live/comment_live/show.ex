@@ -35,6 +35,9 @@ defmodule SlackernewsWeb.CommentLive.Show do
             </li>
           <% end %>
         <% end %>
+        <%= if @comment.child_comments == :some do %>
+          <.link href={"/posts/#{@post.id}/#{@comment.id}"}>More replies</.link>
+        <% end %>
       </ul>
     </div>
     """

@@ -32,7 +32,11 @@ defmodule Slackernews.Comments do
   @doc """
   """
   def load_child_comments(%Comment{} = c, 0) do
-    Repo.preload(c, [:author])
+    Repo.preload(c, [:author, :child_comments])
+    |> Map.update!(:child_comments, fn
+       [] -> nil
+       [_|_] -> :some
+    end)
   end
   def load_child_comments(%Comment{} = c, depth) when depth > 0 do
     c
