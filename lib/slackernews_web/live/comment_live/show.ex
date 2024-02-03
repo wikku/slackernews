@@ -9,6 +9,7 @@ defmodule SlackernewsWeb.CommentLive.Show do
     <div class="m-10">
       <hr/>
       <div>
+        <span><%= @comment.author.email %></span>
         <.timestamp obj={@comment}/>
         <.link :if={@comment.parent_id} href={"/posts/#{@post.id}/#{@comment.parent_id}"}>Parent</.link>
       </div>
