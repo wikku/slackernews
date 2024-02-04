@@ -20,7 +20,7 @@ defmodule SlackernewsWeb.Router do
   scope "/", SlackernewsWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    live "/posts/new", PostLive.Index, :new
+    live "/posts/new", PostLive.New
     live "/posts/:id/show/edit", PostLive.Show, :edit
   end
 

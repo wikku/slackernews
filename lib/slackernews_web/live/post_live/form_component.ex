@@ -75,11 +75,11 @@ defmodule SlackernewsWeb.PostLive.FormComponent do
       raise Slackernews.UnauthorizedError, "log in to make post"
     end
     case Posts.create_post(socket.assigns.current_user.id, post_params) do
-      {:ok, _post} ->
+      {:ok, post} ->
         {:noreply,
          socket
          |> put_flash(:info, "Post created successfully")
-         |> push_patch(to: socket.assigns.patch)}
+         |> push_navigate(to: "/posts/#{post.id}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign_form(socket, changeset)}
