@@ -52,9 +52,9 @@ defmodule SlackernewsWeb.CommentLive.Show do
             </li>
           <% end %>
         <% end %>
-        <%= if @comment.child_comments == :some do %>
+        <div :if={@comment.child_comments == :some} class="mt-4" %>
           <.link navigate={"/posts/#{@post.id}/#{@comment.id}"}>more replies...</.link>
-        <% end %>
+        </div>
       </ul>
     </div>
     """
