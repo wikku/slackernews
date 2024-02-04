@@ -16,6 +16,20 @@ defmodule SlackernewsWeb.CommentLive.Show do
         <div class="mb-0.5">
           <%= @comment.body %>
         </div>
+        <div :if={@current_user && @current_user.id == @comment.author_id}>
+          <details>
+            <summary class="text-zinc-700 text-xs list-none cursor-pointer">edit</summary>
+            <.live_component
+              module={SlackernewsWeb.CommentLive.FormComponent}
+              current_user={@current_user}
+              id={"edit-#{@comment.id}"}
+              action={:edit}
+              post_id={@post.id}
+              comment={@comment}
+            />
+          </details>
+
+        </div>
         <div :if={@current_user} class="text-sm">
           <details>
             <summary class="text-zinc-700 text-xs list-none cursor-pointer">reply</summary>

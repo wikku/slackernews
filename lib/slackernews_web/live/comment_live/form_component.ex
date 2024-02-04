@@ -55,8 +55,7 @@ defmodule SlackernewsWeb.CommentLive.FormComponent do
       {:ok, _comment} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Comment updated successfully")
-         |> push_patch(to: socket.assigns.patch)}
+         |> put_flash(:info, "Comment updated successfully")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign_form(socket, changeset)}
