@@ -10,20 +10,13 @@ defmodule Slackernews.Posts do
   alias Slackernews.Posts.PostVote
   alias Slackernews.Accounts.User
 
-  @with_author_and_score (
+  @posts_with_assocs (
     from p in Post,
     left_join: v in assoc(p, :votes),
     left_join: c in assoc(p, :comments),
     group_by: p.id,
     preload: :author,
-#    select: %Post{p | score: selected_as(coalesce(sum(v.type), 0), :score)}
     select: %Post{p | score: coalesce(sum(v.type), 0), comment_count: count(c)}
-#    select: {p, coalesce(sum(v.type), 0)}
-#    select: merge(p, %{score: coalesce(sum(v.type), 0)})
-#    select_merge: merge(p, %{score: coalesce(sum(v.type), 0)})
-#    select_merge: %Post{p | score: selected_as(coalesce(sum(v.type), 0), :score)}
-#    select_merge: p,
-#    select_merge: %{score: coalesce(sum(v.type), 0)}
   )
 
   @doc """
@@ -36,11 +29,11 @@ defmodule Slackernews.Posts do
 
   """
   def list_posts(:newest) do
-    Repo.all(from Post, preload: :author, order_by: [desc: :inserted_at])
+    Repo.all(@posts_with_assocs |> order_by([desc: :inserted_at]))
   end
 
   def list_posts(:front) do
-    Repo.all(@with_author_and_score
+    Repo.all(@posts_with_assocs
              |> order_by([p,v], coalesce(sum(v.type), 0)
                               / fragment("extract(epoch from ? - NOW()) / 3600", p.inserted_at)))
   end
