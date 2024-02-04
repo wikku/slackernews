@@ -35,7 +35,7 @@ defmodule Slackernews.Posts do
 
   """
   def list_posts(:newest) do
-    Repo.all(from Post, order_by: [desc: :inserted_at])
+    Repo.all(from Post, preload: :author, order_by: [desc: :inserted_at])
   end
 
   def list_posts(:front) do
