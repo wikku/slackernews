@@ -15,7 +15,7 @@
       user_id={@current_user && @current_user.id}
       id={post.id}
     />
-    <a href={post.url}><%= post.title %></a>
+    <a href={post.url} class="font-medium"><%= post.title %></a>
     <div class="text-zinc-700 text-sm">
       <span><%= post.author.username %></span>
       | <.timestamp obj={post}/>
