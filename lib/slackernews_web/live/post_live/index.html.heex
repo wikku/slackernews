@@ -19,6 +19,7 @@
     <div class="text-zinc-700 text-sm">
       <span><%= post.author.username %></span>
       | <.timestamp obj={post}/>
+      | <.link navigate={"/posts/#{post.id}"}><%= post.comment_count %> comments</.link>
     </div>
   </li>
   <% end %>

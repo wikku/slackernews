@@ -13,10 +13,11 @@ defmodule Slackernews.Posts do
   @with_author_and_score (
     from p in Post,
     left_join: v in assoc(p, :votes),
+    left_join: c in assoc(p, :comments),
     group_by: p.id,
     preload: :author,
 #    select: %Post{p | score: selected_as(coalesce(sum(v.type), 0), :score)}
-    select: %Post{p | score: coalesce(sum(v.type), 0)}
+    select: %Post{p | score: coalesce(sum(v.type), 0), comment_count: count(c)}
 #    select: {p, coalesce(sum(v.type), 0)}
 #    select: merge(p, %{score: coalesce(sum(v.type), 0)})
 #    select_merge: merge(p, %{score: coalesce(sum(v.type), 0)})
