@@ -7,32 +7,19 @@
   </:actions>
 </.header>
 
-<.table
-  id="posts"
-  rows={@streams.posts}
-  row_click={fn {_id, post} -> JS.navigate(~p"/posts/#{post}") end}
->
-  <:col :let={{_id, post}} label="Votes">
+<ul>
+  <%= for {_id, post} <- @streams.posts do %>
+  <li class="my-4">
     <.live_component
       module={SlackernewsWeb.PostLive.VoteComponent}
       user_id={@current_user && @current_user.id}
       id={post.id}
     />
-  </:col>
-  <:col :let={{_id, post}} label="Title"><%= post.title %></:col>
-  <:col :let={{_id, post}} label="Url"><%= post.url %></:col>
-  <:col :let={{_id, post}} label="Timestamp"><.timestamp obj={post}/></:col>
-  <:action :let={{_id, post}}>
-    <div class="sr-only">
-      <.link navigate={~p"/posts/#{post}"}>Show</.link>
+    <a href={post.url}><%= post.title %></a>
+    <div class="text-zinc-700 text-sm">
+      <span><%= post.author.username %></span>
+      | <.timestamp obj={post}/>
     </div>
-  </:action>
-  <:action :let={{id, post}}>
-    <.link :if={Posts.can_edit(@current_user, post)}
-      phx-click={JS.push("delete", value: %{id: post.id}) |> hide("##{id}")}
-      data-confirm="Are you sure?"
-    >
-      Delete
-    </.link>
-  </:action>
-</.table>
+  </li>
+  <% end %>
+</ul>
