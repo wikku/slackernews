@@ -7,9 +7,9 @@
   </:actions>
 </.header>
 
-<ul>
-  <%= for {_id, post} <- @streams.posts do %>
-  <li class="my-4 flex items-center">
+<ul id="post-stream" phx-update="stream">
+  <%= for {id, post} <- @streams.posts do %>
+  <li id={id} class="my-4 flex items-center">
     <.live_component
       module={SlackernewsWeb.PostLive.VoteComponent}
       user_id={@current_user && @current_user.id}

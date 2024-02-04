@@ -156,6 +156,7 @@ defmodule Slackernews.Posts do
   defp broadcast({:error, _reason} = error, _event), do: error
 
   defp broadcast({:ok, post}, event) do
+    post = Repo.preload(post, [:author, :comments])
     Phoenix.PubSub.broadcast(Slackernews.PubSub, "posts", {event, post})
     {:ok, post}
   end
