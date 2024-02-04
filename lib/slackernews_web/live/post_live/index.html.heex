@@ -1,5 +1,8 @@
 <.header>
-  Listing Posts
+  <%= case @live_action do
+  :front -> "Hottest posts"
+  :newest -> "Newest posts"
+  end %>
   <:actions>
     <.link :if={@current_user} patch={~p"/posts/new"}>
       <.button>New Post</.button>
