@@ -29,7 +29,7 @@ defmodule SlackernewsWeb.Router do
 
     get "/", PageController, :home
 
-    live "/posts", PostLive.Index, :index
+    live "/newest", PostLive.Index, :index
     live "/posts/:id", PostLive.Show, :show
     live "/posts/:id/:root", PostLive.Show, :show
   end
