@@ -39,7 +39,7 @@ defmodule SlackernewsWeb.CommentLive.Show do
           <% end %>
         <% end %>
         <%= if @comment.child_comments == :some do %>
-          <.link navigate={"/posts/#{@post.id}/#{@comment.id}"}>More replies</.link>
+          <.link navigate={"/posts/#{@post.id}/#{@comment.id}"}>more replies...</.link>
         <% end %>
       </ul>
     </div>
