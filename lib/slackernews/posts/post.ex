@@ -1,5 +1,6 @@
 defmodule Slackernews.Posts.Post do
   use Ecto.Schema
+  import EctoCommons.URLValidator
   import Ecto.Changeset
 
   schema "posts" do
@@ -21,5 +22,6 @@ defmodule Slackernews.Posts.Post do
     post
     |> cast(attrs, [:title, :body, :url])
     |> validate_required([:title, :url])
+    |> validate_url(:url)
   end
 end

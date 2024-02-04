@@ -52,7 +52,8 @@ defmodule Slackernews.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:plug_cowboy, "~> 2.5"},
-      {:timex, "~> 3.0"}
+      {:timex, "~> 3.0"},
+      {:ecto_commons, "~> 0.3"}
     ]
   end
 
