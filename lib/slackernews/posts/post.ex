@@ -20,6 +20,6 @@ defmodule Slackernews.Posts.Post do
   def changeset(post, attrs) do
     post
     |> cast(attrs, [:title, :body, :url])
-    |> validate_required([:title, :body, :url])
+    |> validate_required([:title, :url])
   end
 end
