@@ -16,6 +16,7 @@ defmodule SlackernewsWeb.PostLive.Show do
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
      |> assign(:post, Posts.get_post!(id))
+     |> assign(:root, root)
      |> assign(:comments, [Comments.get_comment!(root) |> Comments.load_child_comments(3)])}
   end
 
@@ -25,6 +26,7 @@ defmodule SlackernewsWeb.PostLive.Show do
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
      |> assign(:post, Posts.get_post!(id))
+     |> assign(:root, nil)
      |> assign(:comments, Comments.list_post_comments(id) |> Enum.map(&Comments.load_child_comments(&1, 3)))}
   end
 

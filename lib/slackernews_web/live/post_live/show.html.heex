@@ -47,13 +47,13 @@
   comment={%Comments.Comment{author_id: @current_user.id, post_id: @post.id}}
 />
 
-<%= if @comments && hd(@comments).parent_id do %>
+<div :if={@root} %>
   <p class="mt-4 text-zinc-700 text-xs">
     You are viewing a single comment's thread.
   </p>
-<% end %>
+</div>
 
-<div class={[@comments && hd(@comments).parent_id && "ml-4"]}>
+<div class={[@root && "ml-4"]}>
   <%= for comment <- @comments do %>
     <.comment comment={comment} current_user={@current_user} post={@post}/>
   <% end %>
