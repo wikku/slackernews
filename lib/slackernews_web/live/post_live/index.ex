@@ -7,19 +7,9 @@ defmodule SlackernewsWeb.PostLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket), do: Posts.subscribe()
-    {:ok, stream(socket, :posts, Enum.reverse(Posts.list_posts()))}
+    {:ok, stream(socket, :posts, Posts.list_posts(socket.assigns.live_action))}
   end
 
-  @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
-  end
-
-  defp apply_action(socket, :index, _params) do
-    socket
-    |> assign(:page_title, "Listing Posts")
-    |> assign(:post, nil)
-  end
 
 #  @impl true
 #  def handle_info({SlackernewsWeb.PostLive.FormComponent, {:saved, post}}, socket) do

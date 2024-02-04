@@ -27,9 +27,9 @@ defmodule SlackernewsWeb.Router do
   scope "/", SlackernewsWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", PostLive.Index, :front
 
-    live "/newest", PostLive.Index, :index
+    live "/newest", PostLive.Index, :newest
     live "/posts/:id", PostLive.Show, :show
     live "/posts/:id/:root", PostLive.Show, :show
   end

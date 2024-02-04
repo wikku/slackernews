@@ -10,6 +10,21 @@ defmodule Slackernews.Posts do
   alias Slackernews.Posts.PostVote
   alias Slackernews.Accounts.User
 
+  @with_author_and_score (
+    from p in Post,
+    left_join: v in assoc(p, :votes),
+    group_by: p.id,
+    preload: :author,
+#    select: %Post{p | score: selected_as(coalesce(sum(v.type), 0), :score)}
+    select: %Post{p | score: coalesce(sum(v.type), 0)}
+#    select: {p, coalesce(sum(v.type), 0)}
+#    select: merge(p, %{score: coalesce(sum(v.type), 0)})
+#    select_merge: merge(p, %{score: coalesce(sum(v.type), 0)})
+#    select_merge: %Post{p | score: selected_as(coalesce(sum(v.type), 0), :score)}
+#    select_merge: p,
+#    select_merge: %{score: coalesce(sum(v.type), 0)}
+  )
+
   @doc """
   Returns the list of posts.
 
@@ -19,10 +34,15 @@ defmodule Slackernews.Posts do
       [%Post{}, ...]
 
   """
-  def list_posts do
-    Repo.all(Post)
+  def list_posts(:newest) do
+    Repo.all(from Post, order_by: [desc: :inserted_at])
   end
 
+  def list_posts(:front) do
+    Repo.all(@with_author_and_score
+             |> order_by([p,v], coalesce(sum(v.type), 0)
+                              / fragment("extract(epoch from ? - NOW()) / 3600", p.inserted_at)))
+  end
   @doc """
   Gets a single post.
 
@@ -145,5 +165,6 @@ defmodule Slackernews.Posts do
     Phoenix.PubSub.broadcast(Slackernews.PubSub, "posts", {event, post})
     {:ok, post}
   end
+
 
 end
