@@ -18,9 +18,9 @@ defmodule SlackernewsWeb.PostLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={@form[:title]} type="text" label="Title" />
-        <.input field={@form[:body]} type="textarea" label="Body" />
-        <.input field={@form[:url]} type="text" label="Url" />
+        <.input field={@form[:title]} type="text" label="Title" autocomplete="off"/>
+        <.input field={@form[:body]} type="textarea" label="Body" autocomplete="off"/>
+        <.input field={@form[:url]} type="text" label="Url" autocomplete="off"/>
         <:actions>
           <.button phx-disable-with="Saving...">Save Post</.button>
         </:actions>
