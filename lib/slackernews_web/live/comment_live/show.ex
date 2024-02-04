@@ -9,7 +9,7 @@ defmodule SlackernewsWeb.CommentLive.Show do
     <div>
       <div class="mt-4">
         <div class="text-zinc-700 text-sm">
-          <span><%= @comment.author.email %></span>
+          <span><%= @comment.author.username %></span>
           | <.timestamp obj={@comment}/>
           <.link :if={@comment.parent_id} navigate={"/posts/#{@post.id}/#{@comment.parent_id}"}>| parent</.link>
         </div>
