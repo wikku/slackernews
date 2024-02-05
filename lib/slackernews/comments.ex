@@ -68,7 +68,14 @@ defmodule Slackernews.Comments do
       ** (Ecto.NoResultsError)
 
   """
-  def get_comment!(id), do: Repo.get!(@comments_with_score, id)
+  def get_comment!(id) do
+    Repo.one! from p in Comment,
+                where: p.id == type(^id, :integer),
+                left_join: v in assoc(p, :votes),
+                group_by: p.id,
+                preload: [:author, :child_comments],
+                select: %Comment{p | score: coalesce(sum(v.type), 0)}
+  end
 
   @doc """
   Creates a comment.
