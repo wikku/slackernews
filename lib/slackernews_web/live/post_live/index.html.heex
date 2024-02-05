@@ -12,7 +12,7 @@
 
 <ul id="post-stream" phx-update="stream">
   <%= for {id, post} <- @streams.posts do %>
-  <li id={id}>
+  <li id={id} class="my-4">
     <.live_component
       module={SlackernewsWeb.PostLive.ShowComponent}
       current_user={@current_user}

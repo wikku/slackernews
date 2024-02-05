@@ -4,6 +4,9 @@
   id={@post.id}
   post={@post}
 />
+<p class="ml-8">
+  <%= @post.body %>
+</p>
 
 <.modal :if={@live_action == :edit} id="post-modal" show on_cancel={JS.patch(~p"/posts/#{@post}")}>
   <.live_component

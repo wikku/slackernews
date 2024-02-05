@@ -6,7 +6,7 @@ defmodule SlackernewsWeb.PostLive.ShowComponent do
   @impl true
   def render(assigns) do
     ~H"""
-      <div class="my-4 flex items-center">
+      <div class="flex items-center">
         <.live_component
           module={SlackernewsWeb.PostLive.VoteComponent}
           user_id={@current_user && @current_user.id}
