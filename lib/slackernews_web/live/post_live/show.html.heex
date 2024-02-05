@@ -36,14 +36,16 @@
   </p>
 </div>
 
-<div class={[@root && "ml-4"]}>
-  <%= for comment <- @comments do %>
-    <.live_component
-      module={SlackernewsWeb.CommentLive.Show}
-      id={comment.id}
-      comment={comment}
-      current_user={@current_user}
-      post={@post}
-    />
+<div id="comment-stream" phx-update="stream" class={[@root && "ml-4"]}>
+  <%= for {id, comment} <- @streams.comments do %>
+    <div id={id}>
+      <.live_component
+        module={SlackernewsWeb.CommentLive.Show}
+        id={comment.id}
+        comment={comment}
+        current_user={@current_user}
+        post={@post}
+      />
+    </div>
   <% end %>
 </div>

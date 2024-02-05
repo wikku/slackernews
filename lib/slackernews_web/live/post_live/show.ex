@@ -17,7 +17,7 @@ defmodule SlackernewsWeb.PostLive.Show do
      |> assign(:page_title, page_title(socket.assigns.live_action))
      |> assign(:post, Posts.get_post!(id))
      |> assign(:root, root)
-     |> assign(:comments, [Comments.get_comment!(root) |> Comments.load_child_comments(3)])}
+     |> stream(:comments, [Comments.get_comment!(root) |> Comments.load_child_comments(3)])}
   end
 
   @impl true
@@ -27,12 +27,12 @@ defmodule SlackernewsWeb.PostLive.Show do
      |> assign(:page_title, page_title(socket.assigns.live_action))
      |> assign(:post, Posts.get_post!(id))
      |> assign(:root, nil)
-     |> assign(:comments, Comments.list_post_comments(id) |> Enum.map(&Comments.load_child_comments(&1, 3)))}
+     |> stream(:comments, Comments.list_post_comments(id) |> Enum.map(&Comments.load_child_comments(&1, 3)))}
   end
 
   @impl true
   def handle_info({:new_comment, comment}, socket) do
-    {:noreply, assign(socket, :comments, [comment | socket.assigns.comments])}
+    {:noreply, stream_insert(socket, :comments, comment, at: 0)}
   end
 
   defp page_title(:show), do: "Show Post"
