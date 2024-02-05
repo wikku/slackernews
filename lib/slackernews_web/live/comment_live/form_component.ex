@@ -57,9 +57,9 @@ defmodule SlackernewsWeb.CommentLive.FormComponent do
       raise Slackernews.UnauthorizedError, "cannot edit this comment"
     end
     case Comments.update_comment(socket.assigns.comment, comment_params) do
-      {:ok, _comment} ->
-        {:noreply,
-         socket }
+      {:ok, comment} ->
+        socket.assigns.on_update.(comment)
+        {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign_form(socket, changeset)}

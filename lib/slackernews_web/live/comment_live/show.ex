@@ -1,9 +1,10 @@
 defmodule SlackernewsWeb.CommentLive.Show do
   use Phoenix.Component
+  use SlackernewsWeb, :live_component
   import SlackernewsWeb.CoreComponents
 
 
-  def comment(assigns) do
+  def render(assigns) do
     ~H"""
     <div>
       <div class="flex my-4">
@@ -31,6 +32,7 @@ defmodule SlackernewsWeb.CommentLive.Show do
                 action={:edit}
                 post_id={@post.id}
                 comment={@comment}
+                on_update={fn comment -> send_update(@myself, comment: comment) end}
               />
             </details>
 
@@ -54,7 +56,13 @@ defmodule SlackernewsWeb.CommentLive.Show do
         <%= if is_list(@comment.child_comments) do %>
           <%= for child <- @comment.child_comments || [] do %>
             <li>
-              <.comment comment={child} current_user={@current_user} post={@post}/>
+              <.live_component
+                module={SlackernewsWeb.CommentLive.Show}
+                id={child.id}
+                comment={child}
+                current_user={@current_user}
+                post={@post}
+              />
             </li>
           <% end %>
         <% end %>
