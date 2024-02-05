@@ -14,6 +14,7 @@ defmodule SlackernewsWeb.PostLive.ShowComponent do
         />
         <div>
           <a href={@post.url} class="font-medium"><%= @post.title %></a>
+          <span class="text-zinc-500 text-xs">(<%= URI.parse(@post.url).host %>)</span>
           <div class="text-zinc-700 text-sm">
             <span><%= @post.author.username %></span>
             | <.timestamp obj={@post}/>
