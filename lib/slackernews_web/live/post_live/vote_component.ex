@@ -6,7 +6,7 @@ defmodule SlackernewsWeb.PostLive.VoteComponent do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="text-center w-10 text-sm px-2">
+    <div class="text-center w-8 text-sm pr-2">
       <button :if={@user_id} phx-click="up" phx-target={@myself} class="block w-full">
         <%= if @vote == 1 do %>▲<% else %>△<% end %>
       </button>
