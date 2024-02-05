@@ -7,7 +7,17 @@ defmodule Slackernews.Comments do
   alias Slackernews.Repo
 
   alias Slackernews.Comments.Comment
+  alias Slackernews.Comments.CommentVote
   alias Slackernews.Accounts.User
+
+  @comments_with_score (
+    from c in Comment,
+    left_join: v in assoc(c, :votes),
+    left_join: r in assoc(c, :child_comments),
+    group_by: c.id,
+    preload: :author,
+    select: %Comment{c | score: coalesce(sum(v.type), 0)}
+  )
 
   @doc """
   Returns the list of comments.
@@ -58,7 +68,7 @@ defmodule Slackernews.Comments do
       ** (Ecto.NoResultsError)
 
   """
-  def get_comment!(id), do: Repo.get!(Comment, id)
+  def get_comment!(id), do: Repo.get!(@comments_with_score, id)
 
   @doc """
   Creates a comment.
@@ -131,5 +141,25 @@ defmodule Slackernews.Comments do
   def can_edit(nil, _comment), do: false
   def can_edit(%User{id: id}, %Comment{} = comment) do
     id && id == comment.author_id
+  end
+
+  @doc """
+    Returns the vote direction of a user on a comment.
+  """
+  def users_vote(nil, _comment_id), do: 0
+  def users_vote(user_id, comment_id) do
+    case Repo.get_by(CommentVote, [voter_id: user_id, comment_id: comment_id]) do
+      %CommentVote{type: type} -> type
+      nil -> 0
+    end
+  end
+
+  def cast_vote(voter_id, comment_id, 0) do
+    Repo.delete_all(CommentVote |> where(voter_id: ^voter_id, comment_id: ^comment_id))
+  end
+  def cast_vote(voter_id, comment_id, vote) do
+    Repo.insert!(%CommentVote{voter_id: voter_id, comment_id: comment_id, type: vote},
+                 on_conflict: {:replace, [:type]},
+                 conflict_target: [:comment_id, :voter_id])
   end
 end

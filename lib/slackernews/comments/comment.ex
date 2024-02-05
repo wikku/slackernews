@@ -8,6 +8,7 @@ defmodule Slackernews.Comments.Comment do
     belongs_to :post, Slackernews.Posts.Post
     belongs_to :parent, Slackernews.Comments.Comment
     has_many :child_comments, Slackernews.Comments.Comment, foreign_key: :parent_id
+    has_many :votes, Slackernews.Comments.CommentVote
     field :score, :integer, virtual: true
 
     timestamps(type: :utc_datetime)

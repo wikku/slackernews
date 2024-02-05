@@ -1,0 +1,45 @@
+defmodule SlackernewsWeb.CommentLive.VoteComponent do
+  use SlackernewsWeb, :live_component
+
+  alias Slackernews.Comments
+
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <div class="text-center w-8 text-sm pr-2">
+      <button :if={@user_id} phx-click="up" phx-target={@myself} class="block w-full">
+        <%= if @vote == 1 do %>▲<% else %>△<% end %>
+      </button>
+      <div class="-mb-0.5"> <%= @score %> </div>
+      <button :if={@user_id} phx-click="down" phx-target={@myself} class="block w-full">
+        <%= if @vote == -1 do %>▼<% else %>▽<% end %>
+      </button>
+    </div>
+    """
+  end
+
+  @impl true
+  def update(assigns, socket) do
+    score = Comments.get_comment!(assigns.id).score
+    vote = Comments.users_vote(assigns.user_id, assigns.id)
+    {:ok, assign(socket, score: score, vote: vote, id: assigns.id, user_id: assigns.user_id)}
+  end
+
+  @impl true
+  def handle_event("up", _, socket), do: handle_vote(1, socket)
+
+  @impl true
+  def handle_event("down", _, socket), do: handle_vote(-1, socket)
+
+  defp handle_vote(clicked_vote, socket) do
+    if !socket.assigns.user_id do
+      raise Slackernews.UnauthorizedError, "log in to vote"
+    end
+    vote = socket.assigns.vote
+    new_vote = if vote == clicked_vote do 0 else clicked_vote end
+    new_score = socket.assigns.score - vote + new_vote
+    Comments.cast_vote(socket.assigns.user_id, socket.assigns.id, new_vote)
+    {:noreply, assign(socket, score: new_score, vote: new_vote)}
+  end
+
+end
