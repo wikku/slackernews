@@ -54,22 +54,23 @@ defmodule SlackernewsWeb.CommentLive.Show do
         </div>
       </div>
       <ul class="ml-8">
-        <%= if is_list(@comment.child_comments) do %>
-          <%= for child <- @comment.child_comments || [] do %>
-            <li>
-              <.live_component
-                module={SlackernewsWeb.CommentLive.Show}
-                id={child.id}
-                comment={child}
-                current_user={@current_user}
-                post={@post}
-              />
-            </li>
-          <% end %>
+        <%= for child <- @comment.child_comments || [] do %>
+          <li>
+            <%= if child == :some do %>
+            <div class="mt-4 ml-8">
+              <.link navigate={"/posts/#{@post.id}/#{@comment.id}"}>more replies...</.link>
+            </div>
+            <% else %>
+            <.live_component
+              module={SlackernewsWeb.CommentLive.Show}
+              id={child.id}
+              comment={child}
+              current_user={@current_user}
+              post={@post}
+            />
+            <% end %>
+          </li>
         <% end %>
-        <div :if={@comment.child_comments == :some} class="mt-4" %>
-          <.link navigate={"/posts/#{@post.id}/#{@comment.id}"}>more replies...</.link>
-        </div>
       </ul>
     </div>
     """
