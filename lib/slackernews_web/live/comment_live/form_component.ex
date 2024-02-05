@@ -73,9 +73,10 @@ defmodule SlackernewsWeb.CommentLive.FormComponent do
     IO.inspect("asdf")
     comment = socket.assigns.comment
     case Comments.create_comment(comment.author_id, comment.post_id, comment.parent_id, comment_params) do
-      {:ok, _comment} ->
-        {:noreply,
-         socket }
+      {:ok, comment} ->
+        comment = %Comments.Comment{comment | author: socket.assigns.current_user, child_comments: []}
+        socket.assigns.on_reply.(comment)
+        {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         IO.inspect("asdf")

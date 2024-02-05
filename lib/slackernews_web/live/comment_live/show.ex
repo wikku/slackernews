@@ -47,6 +47,7 @@ defmodule SlackernewsWeb.CommentLive.Show do
                 action={:new}
                 post_id={@post.id}
                 comment={%Slackernews.Comments.Comment{author_id: @current_user.id, post_id: @post.id, parent_id: @comment.id}}
+                on_reply={fn comment -> send_update(@myself, comment: Map.update!(@comment, :child_comments, fn cs -> [comment | cs] end)) end}
               />
             </details>
           </div>
