@@ -22,7 +22,12 @@ defmodule SlackernewsWeb.PostLive.FormComponent do
         <.input field={@form[:body]} type="textarea" label="Body" autocomplete="off"/>
         <.input field={@form[:url]} type="text" label="Url" autocomplete="off"/>
         <:actions>
-          <.button phx-disable-with="Saving...">Save Post</.button>
+          <.button phx-disable-with="Saving...">
+          <%= case @action do
+          :new -> "Add Post"
+          :edit -> "Save Post"
+          end %>
+          </.button>
         </:actions>
       </.simple_form>
     </div>

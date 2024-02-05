@@ -16,7 +16,12 @@ defmodule SlackernewsWeb.CommentLive.FormComponent do
       >
         <.input field={@form[:body]} type="textarea"/>
         <:actions>
-          <.button phx-disable-with="Saving...">Save Comment</.button>
+          <.button phx-disable-with="Saving...">
+            <%= case @action do
+            :new -> "Add Comment"
+            :edit -> "Save Comment"
+            end %>
+          </.button>
         </:actions>
       </.simple_form>
     </div>
