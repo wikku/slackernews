@@ -30,6 +30,11 @@ defmodule SlackernewsWeb.PostLive.Show do
      |> assign(:comments, Comments.list_post_comments(id) |> Enum.map(&Comments.load_child_comments(&1, 3)))}
   end
 
+  @impl true
+  def handle_info({:new_comment, comment}, socket) do
+    {:noreply, assign(socket, :comments, [comment | socket.assigns.comments])}
+  end
+
   defp page_title(:show), do: "Show Post"
   defp page_title(:edit), do: "Edit Post"
 end
