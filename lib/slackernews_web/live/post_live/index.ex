@@ -18,7 +18,10 @@ defmodule SlackernewsWeb.PostLive.Index do
 
   @impl true
   def handle_info({:post_created, post}, socket) do
-    {:noreply, stream_insert(socket, :posts, post, at: 0)}
+    case socket.assigns.live_action do
+    :front -> {:noreply, socket}
+    :newest -> {:noreply, stream_insert(socket, :posts, post, at: 0)}
+    end
   end
 
   @impl true
