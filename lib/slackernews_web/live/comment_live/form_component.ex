@@ -59,8 +59,7 @@ defmodule SlackernewsWeb.CommentLive.FormComponent do
     case Comments.update_comment(socket.assigns.comment, comment_params) do
       {:ok, _comment} ->
         {:noreply,
-         socket
-         |> put_flash(:info, "Comment updated successfully")}
+         socket }
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign_form(socket, changeset)}
@@ -76,8 +75,7 @@ defmodule SlackernewsWeb.CommentLive.FormComponent do
     case Comments.create_comment(comment.author_id, comment.post_id, comment.parent_id, comment_params) do
       {:ok, _comment} ->
         {:noreply,
-         socket
-         |> put_flash(:info, "Comment created successfully") }
+         socket }
 
       {:error, %Ecto.Changeset{} = changeset} ->
         IO.inspect("asdf")

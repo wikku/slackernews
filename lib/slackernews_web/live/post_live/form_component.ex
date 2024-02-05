@@ -66,7 +66,6 @@ defmodule SlackernewsWeb.PostLive.FormComponent do
       {:ok, _post} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Post updated successfully")
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -82,7 +81,6 @@ defmodule SlackernewsWeb.PostLive.FormComponent do
       {:ok, post} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Post created successfully")
          |> push_navigate(to: "/posts/#{post.id}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
