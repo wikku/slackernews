@@ -1,23 +1,9 @@
-<.list>
-  <:item title="Author"><%= @post.author.username %></:item>
-  <:item title="Title"><%= @post.title %></:item>
-  <:item title="Body"><%= @post.body %></:item>
-  <:item title="Url"><%= @post.url %></:item>
-  <:item title="Timestamp"><.timestamp obj={@post}/></:item>
-  <:item title="Votes">
-    <.live_component
-      module={SlackernewsWeb.PostLive.VoteComponent}
-      user_id={@current_user && @current_user.id}
-      id={@post.id}
-    />
-  </:item>
-</.list>
-<div>
-    <.link :if={Posts.can_edit(@current_user, @post)} patch={~p"/posts/#{@post}/show/edit"} phx-click={JS.push_focus()}>
-      <.button>Edit post</.button>
-    </.link>
-</div>
-
+<.live_component
+  module={SlackernewsWeb.PostLive.ShowComponent}
+  current_user={@current_user}
+  id={@post.id}
+  post={@post}
+/>
 
 <.modal :if={@live_action == :edit} id="post-modal" show on_cancel={JS.patch(~p"/posts/#{@post}")}>
   <.live_component

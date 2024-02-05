@@ -12,20 +12,13 @@
 
 <ul id="post-stream" phx-update="stream">
   <%= for {id, post} <- @streams.posts do %>
-  <li id={id} class="my-4 flex items-center">
+  <li id={id}>
     <.live_component
-      module={SlackernewsWeb.PostLive.VoteComponent}
-      user_id={@current_user && @current_user.id}
+      module={SlackernewsWeb.PostLive.ShowComponent}
+      current_user={@current_user}
       id={post.id}
+      post={post}
     />
-    <div>
-      <a href={post.url} class="font-medium"><%= post.title %></a>
-      <div class="text-zinc-700 text-sm">
-        <span><%= post.author.username %></span>
-        | <.timestamp obj={post}/>
-        | <.link navigate={"/posts/#{post.id}"}><%= post.comment_count %> comments</.link>
-      </div>
-    </div>
   </li>
   <% end %>
 </ul>
